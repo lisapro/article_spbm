@@ -102,15 +102,18 @@ def read_var(name):
     return var_ice,var_water,var_sediments,data_units
 
 
-def plot(var,axis0,axis1,axis2):
+def plot(var,axis0,axis1,axis2): #ice,water,sed
     ticks_dict = {'B_BIO_DON':([0,1,2,3,4],[10,15,20,25,30],[0,10,20,30,40,50]),
                   'B_BIO_PON':([0,1,2,3,4],[0,1,2,3,4,5,6,10,15,20,25,50],[0,50,100,150,200]),
                   'B_BIO_O2':([0,10,20,30,40,50],[0,50,100,150,200,250,300,350],[0,25,50,75,100,125,150]),
                   'B_S_H2S':([0,0.1,0.2,0.3],[0,0.01,0.02,0.03,0.04],[0,0.01,0.02,0.03]),
                   'B_Fe_Fe2':([0,0.005,0.01,0.015,0.02],[0,0.01,0.02,0.03],[0,0.25,0.5,0.75,1]),
-                  'B_Mn_Mn2':([0,0.01,0.02,0.03,0.04,0.05],[0,0.2,0.4,0.6,0.8,1],[0,2.5,5,7.5,10,12.5,15])
+                  'B_Mn_Mn2':([0,0.01,0.02,0.03,0.04,0.05],[0,0.2,0.4,0.6,0.8,1],[0,2.5,5,7.5,10,12.5,15]),
+                  'B_NUT_Si':([0,0.5,1,1.5,2],[5,10,15],[5,10,15]),
+                  'B_NUT_NO3':([0,1,2,3,4,5],[0,5,10,15,20,25],[0,5,10,15,20,25]),
+                  'B_NUT_NH4':([0,0.25,0.5,0.75,1,1.25,1.5],[0,1,2,3,4,5],[0,10,20,30,40,50]),
                   }
-    
+
     ### Time ticks ### 
     from dateutil.relativedelta import relativedelta
     '''if (stop-start)>= 367:
@@ -169,7 +172,7 @@ def plot(var,axis0,axis1,axis2):
     axis2.annotate('  Sediment Water Interface',
             xy =(start,max_water),
             xytext=(start,max_water-0.01),color = 'w')
-    axis0.set_title(var +' ['+ str(data_units)+']')
+    axis0.set_title(var +' [$\mu M \cdot l ^{-1}$]')
     axis0.set_ylim(min_ice,max_ice)
     
     axis1.set_ylim(max_water,min_water)
@@ -202,13 +205,29 @@ def plot(var,axis0,axis1,axis2):
     axis2.annotate('  Sediment Water Interface',
             xy =(to_start,max_water),
             xytext=(to_start,max_water-0.01),color = 'w')   
-    
+    if var in ('B_BIO_O2','B_Mn_Mn2','B_NUT_NH4'):
+        if (stop-start)>= 365*6:            
+            axis2.xaxis.set_major_formatter(
+                mdates.DateFormatter('%Y')) 
+                #ticks = np.arange(time[start:stop],time[start:stop],50)
+        elif (stop-start) > 367 and (stop-start) < 365*6:
+            axis2.xaxis.set_major_formatter(
+                mdates.DateFormatter("%b '%y"))   
+        else : 
+            axis2.xaxis.set_major_formatter(
+                mdates.DateFormatter('%b'))    
+        import matplotlib.ticker as ticker
+        
+        def fmt(x, pos):
+            a, b = '{:.2e}'.format(x).split('e')
+            b = int(b)
+            return r'${} \times 10^{{{}}}$'.format(a, b)
 
 
 figure = plt.figure(figsize=(8.27, 11.69), dpi=100,
                 facecolor='None',edgecolor='None')   
 gs0 = gridspec.GridSpec(3, 1)
-gs0.update(left=0.09, right= 1,top = 0.95,bottom = 0.04,
+gs0.update(left=0.09, right= 1,top = 0.97,bottom = 0.05,
                    wspace=0.1,hspace=0.1)
 dy = 0.04
 
@@ -229,6 +248,9 @@ ax0_2 = figure.add_subplot(gs_2[0]) # ice
 ax1_2 = figure.add_subplot(gs_2[1]) # water
 ax2_2 = figure.add_subplot(gs_2[2]) # sed
 
+
+
+
 def figure(numfig):
     if numfig == 5:
         plot('B_BIO_DON',ax0,ax1,ax2)              
@@ -239,28 +261,19 @@ def figure(numfig):
         plot('B_S_H2S',ax0,ax1,ax2)              
         plot('B_Fe_Fe2',ax0_1,ax1_1,ax2_1)  
         plot('B_Mn_Mn2',ax0_2,ax1_2,ax2_2)
-
-
+        plt.savefig('Figure07.pdf')
+    elif numfig == 6:
+        plot('B_NUT_Si',ax0,ax1,ax2)              
+        plot('B_NUT_NO3',ax0_1,ax1_1,ax2_1)  
+        plot('B_NUT_NH4',ax0_2,ax1_2,ax2_2)
+        plt.savefig('Figure06.pdf')
+        
 #### specify figure here
-figure(7)
-
-plt.savefig('Figure07.pdf')
+#figure(7)
+#figure(6)
+figure(5)
+#plt.show()
+#
    
-if (stop-start)>= 365*6:
-    ax2_2.xaxis.set_major_formatter(
-        mdates.DateFormatter('%Y')) 
-    #ticks = np.arange(time[start:stop],time[start:stop],50)
-elif (stop-start) > 367 and (stop-start) < 365*6:
-    ax2_2.xaxis.set_major_formatter(
-        mdates.DateFormatter('%m/%Y'))   
-else : 
-    ax2_2.xaxis.set_major_formatter(
-        mdates.DateFormatter('%b'))    
-import matplotlib.ticker as ticker
 
-def fmt(x, pos):
-    a, b = '{:.2e}'.format(x).split('e')
-    b = int(b)
-    return r'${} \times 10^{{{}}}$'.format(a, b)
     
-

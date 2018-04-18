@@ -311,6 +311,7 @@ names = {ax1_i:'diatoms chlorophyll a',ax2_i:'diatoms ice chlorophyll a',
 for axis in (ax1_i,ax2_i,ax3_i,ax4_i,ax5_i): #ax1_1_i,ax2_1_i,ax3_1_i,ax4_1_i,ax5_1_i,
     axis.set_xticklabels([])   
     axis.set_ylim(min_ice,250) #max_ice 
+    axis.set_yticks([100,200])
     name = names[axis]
     #print (name)
     #axis.set_title(name)
@@ -330,10 +331,11 @@ for axis in (ax1,ax2,ax3,ax4,ax5):    #,ax1_1,ax2_1,ax3_1,ax4_1,ax5_1
     axis.set_ylabel("Water (m)") #, fontsize = fontsize)
 
 ax5.xaxis.set_major_formatter(
-    mdates.DateFormatter('%m')) 
+    mdates.DateFormatter("%b '%y")) 
 
   
-plt.show()
+plt.savefig('Figure04.pdf')
+#plt.show()
 
 # Save in a vector format 
 #plt.savefig('ice_brom_{}.eps'.format(name), format='eps')
