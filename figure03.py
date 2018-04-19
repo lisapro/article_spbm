@@ -165,12 +165,12 @@ for axis in (ax1,ax1_1,ax1_2,ax1_3,ax1_4,ax1_5):
 ax1_4.set_xlabel('day,month')    
 ax1_5.set_xlabel('day,month')   
   
-ax0.set_title(r'$\mathrm{Total\ chlorophyll\ a\ mg\cdot m ^{-3}}$')    
+ax0.set_title(r'Total chlorophyll a, $ mg\cdot m ^{-3}$')    
 ax0_1.set_title(r'$\mathrm{ pH }$') 
-ax0_2.set_title(r'$\mathrm{ O_2\ \mu M}$')
-ax0_3.set_title(r'$\mathrm{ Si\ \mu M}$')
-ax0_4.set_title(r'$\mathrm{ PO_4\ \mu M}$')
-ax0_5.set_title(r'$\mathrm{ NO_3\ \mu M}$')
+ax0_2.set_title(r'$\mathrm{ O_2,\ \mu M}$')
+ax0_3.set_title(r'$\mathrm{ Si,\ \mu M}$')
+ax0_4.set_title(r'$\mathrm{ PO_4,\ \mu M}$')
+ax0_5.set_title(r'$\mathrm{ NO_3,\ \mu M}$')
 
 for axis in (ax0,ax0_1,ax0_2,ax0_3,ax0_4,ax0_5):
     axis.set_ylim(0,100)
@@ -249,4 +249,5 @@ cb1 = add_colorbar(CS2_4,ax1_4)
 cb0 = add_colorbar(CS1_5,ax0_5)
 cb1 = add_colorbar(CS2_5,ax1_5)                                      
 
-plt.show()                              
+#plt.show()                              
+plt.savefig('Figure3.pdf')

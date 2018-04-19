@@ -102,7 +102,7 @@ def read_var(name):
     return var_ice,var_water,var_sediments,data_units
 
 
-def plot(var,axis0,axis1,axis2): #ice,water,sed
+def plot(var,axis0,axis1,axis2,tit): #ice,water,sed
     ticks_dict = {'B_BIO_DON':([0,1,2,3,4],[10,15,20,25,30],[0,10,20,30,40,50]),
                   'B_BIO_PON':([0,1,2,3,4],[0,1,2,3,4,5,6,10,15,20,25,50],[0,50,100,150,200]),
                   'B_BIO_O2':([0,10,20,30,40,50],[0,50,100,150,200,250,300,350],[0,25,50,75,100,125,150]),
@@ -116,12 +116,6 @@ def plot(var,axis0,axis1,axis2): #ice,water,sed
 
     ### Time ticks ### 
     from dateutil.relativedelta import relativedelta
-    '''if (stop-start)>= 367:
-        dt =  int((stop - start)/365) #number of years
-        time_ticks = []
-        for n in range(0,dt+1):
-            time_ticks.append(format_time[start]+relativedelta(years = n))'''
-    
     
     def add_colorbar(CS,axis,ma1,t):
         if ma1 > 10000 or ma1 < 0.001:
@@ -172,7 +166,7 @@ def plot(var,axis0,axis1,axis2): #ice,water,sed
     axis2.annotate('  Sediment Water Interface',
             xy =(start,max_water),
             xytext=(start,max_water-0.01),color = 'w')
-    axis0.set_title(var +' [$\mu M \cdot l ^{-1}$]')
+    axis0.set_title(tit +', $\mu M$')
     axis0.set_ylim(min_ice,max_ice)
     
     axis1.set_ylim(max_water,min_water)
@@ -183,22 +177,16 @@ def plot(var,axis0,axis1,axis2): #ice,water,sed
     axis1.set_xticklabels([])
     axis2.set_xticklabels([])    
     #letters = ['(a)','(b)','(c)']
-    labels = ["Ice thickness cm", "Depth m","Depth m" ]
+    labels = ["Ice thickness, cm", "Depth, m","Depth, m" ]
     n = 1
     ice_ticks = np.arange(50,max_ice,50)
     
     axis0.set_yticks(ice_ticks)
     
     for axis in (axis1,axis2): 
-        # try:
-        #    axis.set_xticks(time_ticks)
-        #except: NameError
         axis.yaxis.set_label_coords(-0.08, 0.45)
-        #axis.text(-0.21, 0.9, letters[n], transform=axis.transAxes , 
-        #        size= fontsize) #, weight='bold')
         axis.set_ylabel(labels[n])  
         n=n+1
-        #plt.tick_params(axis='both', which='major', labelsize= fontsize) 
     axis0.yaxis.set_label_coords(-0.08, 0.6)   
     axis0.set_ylabel(labels[0]) 
      
@@ -224,53 +212,111 @@ def plot(var,axis0,axis1,axis2): #ice,water,sed
             return r'${} \times 10^{{{}}}$'.format(a, b)
 
 
-figure = plt.figure(figsize=(8.27, 11.69), dpi=100,
-                facecolor='None',edgecolor='None')   
-gs0 = gridspec.GridSpec(3, 1)
-gs0.update(left=0.09, right= 1,top = 0.97,bottom = 0.05,
-                   wspace=0.1,hspace=0.1)
-dy = 0.04
-
-gs = gridspec.GridSpecFromSubplotSpec(3, 1, subplot_spec=gs0[0],hspace=dy)
-gs_1 = gridspec.GridSpecFromSubplotSpec(3, 1, subplot_spec=gs0[1],hspace=dy)
-gs_2 = gridspec.GridSpecFromSubplotSpec(3, 1, subplot_spec=gs0[2],hspace=dy)
-
-#add subplots
-ax0 = figure.add_subplot(gs[0]) # ice 
-ax1 = figure.add_subplot(gs[1]) # water
-ax2 = figure.add_subplot(gs[2]) # sed
-
-ax0_1 = figure.add_subplot(gs_1[0]) # ice 
-ax1_1 = figure.add_subplot(gs_1[1]) # water
-ax2_1 = figure.add_subplot(gs_1[2]) # sed
-
-ax0_2 = figure.add_subplot(gs_2[0]) # ice 
-ax1_2 = figure.add_subplot(gs_2[1]) # water
-ax2_2 = figure.add_subplot(gs_2[2]) # sed
-
-
-
-
 def figure(numfig):
     if numfig == 5:
-        plot('B_BIO_DON',ax0,ax1,ax2)              
-        plot('B_BIO_PON',ax0_1,ax1_1,ax2_1)  
-        plot('B_BIO_O2',ax0_2,ax1_2,ax2_2)
+        figure = plt.figure(figsize=(8.27, 11.69), dpi=100,
+                        facecolor='None',edgecolor='None')   
+        gs0 = gridspec.GridSpec(3, 1)
+        gs0.update(left=0.09, right= 1,top = 0.97,bottom = 0.05,
+                           wspace=0.1,hspace=0.1)
+        dy = 0.04
+        
+        gs = gridspec.GridSpecFromSubplotSpec(3, 1, subplot_spec=gs0[0],hspace=dy)
+        gs_1 = gridspec.GridSpecFromSubplotSpec(3, 1, subplot_spec=gs0[1],hspace=dy)
+        gs_2 = gridspec.GridSpecFromSubplotSpec(3, 1, subplot_spec=gs0[2],hspace=dy)
+        
+        #add subplots
+        ax0 = figure.add_subplot(gs[0]) # ice 
+        ax1 = figure.add_subplot(gs[1]) # water
+        ax2 = figure.add_subplot(gs[2]) # sed
+        
+        ax0_1 = figure.add_subplot(gs_1[0]) # ice 
+        ax1_1 = figure.add_subplot(gs_1[1]) # water
+        ax2_1 = figure.add_subplot(gs_1[2]) # sed
+        
+        ax0_2 = figure.add_subplot(gs_2[0]) # ice 
+        ax1_2 = figure.add_subplot(gs_2[1]) # water
+        ax2_2 = figure.add_subplot(gs_2[2]) # sed
+        
+        plot('B_BIO_DON',ax0,ax1,ax2,'DON')              
+        plot('B_BIO_PON',ax0_1,ax1_1,ax2_1,'PON')  
+        plot('B_BIO_O2',ax0_2,ax1_2,ax2_2,'O$_2$')
+        
         plt.savefig('Figure05.pdf')
+        plt.clf()
+        
+        
     elif numfig == 7:
-        plot('B_S_H2S',ax0,ax1,ax2)              
-        plot('B_Fe_Fe2',ax0_1,ax1_1,ax2_1)  
-        plot('B_Mn_Mn2',ax0_2,ax1_2,ax2_2)
+        
+        figure = plt.figure(figsize=(8.27, 11.69), dpi=100,
+                        facecolor='None',edgecolor='None')   
+        gs0 = gridspec.GridSpec(3, 1)
+        gs0.update(left=0.09, right= 1,top = 0.97,bottom = 0.05,
+                           wspace=0.1,hspace=0.1)
+        dy = 0.04
+        
+        gs = gridspec.GridSpecFromSubplotSpec(3, 1, subplot_spec=gs0[0],hspace=dy)
+        gs_1 = gridspec.GridSpecFromSubplotSpec(3, 1, subplot_spec=gs0[1],hspace=dy)
+        gs_2 = gridspec.GridSpecFromSubplotSpec(3, 1, subplot_spec=gs0[2],hspace=dy)
+        
+        #add subplots
+        ax0 = figure.add_subplot(gs[0]) # ice 
+        ax1 = figure.add_subplot(gs[1]) # water
+        ax2 = figure.add_subplot(gs[2]) # sed
+        
+        ax0_1 = figure.add_subplot(gs_1[0]) # ice 
+        ax1_1 = figure.add_subplot(gs_1[1]) # water
+        ax2_1 = figure.add_subplot(gs_1[2]) # sed
+        
+        ax0_2 = figure.add_subplot(gs_2[0]) # ice 
+        ax1_2 = figure.add_subplot(gs_2[1]) # water
+        ax2_2 = figure.add_subplot(gs_2[2]) # sed
+        
+                
+        plot('B_S_H2S',ax0,ax1,ax2,'H$_2$S')              
+        plot('B_Fe_Fe2',ax0_1,ax1_1,ax2_1,'FeII')  
+        plot('B_Mn_Mn2',ax0_2,ax1_2,ax2_2,'MnII')
         plt.savefig('Figure07.pdf')
+        plt.clf()
+        
     elif numfig == 6:
-        plot('B_NUT_Si',ax0,ax1,ax2)              
-        plot('B_NUT_NO3',ax0_1,ax1_1,ax2_1)  
-        plot('B_NUT_NH4',ax0_2,ax1_2,ax2_2)
+        
+        figure = plt.figure(figsize=(8.27, 11.69), dpi=100,
+                        facecolor='None',edgecolor='None')   
+        gs0 = gridspec.GridSpec(3, 1)
+        gs0.update(left=0.09, right= 1,top = 0.97,bottom = 0.05,
+                           wspace=0.1,hspace=0.1)
+        dy = 0.04
+        
+        gs = gridspec.GridSpecFromSubplotSpec(3, 1, subplot_spec=gs0[0],hspace=dy)
+        gs_1 = gridspec.GridSpecFromSubplotSpec(3, 1, subplot_spec=gs0[1],hspace=dy)
+        gs_2 = gridspec.GridSpecFromSubplotSpec(3, 1, subplot_spec=gs0[2],hspace=dy)
+        
+        #add subplots
+        ax0 = figure.add_subplot(gs[0]) # ice 
+        ax1 = figure.add_subplot(gs[1]) # water
+        ax2 = figure.add_subplot(gs[2]) # sed
+        
+        ax0_1 = figure.add_subplot(gs_1[0]) # ice 
+        ax1_1 = figure.add_subplot(gs_1[1]) # water
+        ax2_1 = figure.add_subplot(gs_1[2]) # sed
+        
+        ax0_2 = figure.add_subplot(gs_2[0]) # ice 
+        ax1_2 = figure.add_subplot(gs_2[1]) # water
+        ax2_2 = figure.add_subplot(gs_2[2]) # sed
+                
+        plot('B_NUT_Si',ax0,ax1,ax2,'Si')              
+        plot('B_NUT_NO3',ax0_1,ax1_1,ax2_1,'NO$_3$')  
+        plot('B_NUT_NH4',ax0_2,ax1_2,ax2_2,'NH$_4$')
         plt.savefig('Figure06.pdf')
+        plt.clf()
+        
+        
+        
         
 #### specify figure here
-#figure(7)
-#figure(6)
+figure(7)
+figure(6)
 figure(5)
 #plt.show()
 #
