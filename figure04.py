@@ -30,7 +30,7 @@ from matplotlib import rc
 font = {'size' : 12}
 rc('font', **font)
 
-figure = plt.figure(figsize=(8.27, 10.69), dpi=100,
+figure = plt.figure(figsize=(8.27, 11.69), dpi=100,
                 facecolor='None',edgecolor='None')                
 directory =  askdirectory()  
 
