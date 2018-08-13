@@ -31,6 +31,9 @@ from matplotlib import rc
 font = {'size' : 12}
 rc('font', **font)
 textsize = 13
+x_text = 0.05
+y_text = 1.2
+labels = ('A) ','B) ','C) ')
 import sys
 from matplotlib.backends.backend_qt5agg import (
 FigureCanvasQTAgg as FigureCanvas)
@@ -226,22 +229,27 @@ def figure(numfig):
         gs_2 = gridspec.GridSpecFromSubplotSpec(3, 1, subplot_spec=gs0[2],hspace=dy)
         
         #add subplots
+
         ax0 = figure.add_subplot(gs[0]) # ice 
         ax1 = figure.add_subplot(gs[1]) # water
         ax2 = figure.add_subplot(gs[2]) # sed
         
-        ax0_1 = figure.add_subplot(gs_1[0]) # ice 
+        ax0_1 = figure.add_subplot(gs_1[0]) # ice       
         ax1_1 = figure.add_subplot(gs_1[1]) # water
         ax2_1 = figure.add_subplot(gs_1[2]) # sed
         
-        ax0_2 = figure.add_subplot(gs_2[0]) # ice 
+        ax0_2 = figure.add_subplot(gs_2[0]) # ice        
         ax1_2 = figure.add_subplot(gs_2[1]) # water
         ax2_2 = figure.add_subplot(gs_2[2]) # sed
-        
+
+        for i,axis in enumerate((ax0,ax0_1,ax0_2)):
+            axis.text(x_text, y_text, labels[i], transform=axis.transAxes,
+                 fontsize=14, fontweight='bold', va='top', ha='right')
+                
         plot('B_BIO_DON',ax0,ax1,ax2,'DON')              
         plot('B_BIO_PON',ax0_1,ax1_1,ax2_1,'PON')  
         plot('B_BIO_O2',ax0_2,ax1_2,ax2_2,'O$_2$')
-        
+        #plt.show()
         plt.savefig('Figure05.pdf')
         plt.clf()
         
@@ -272,11 +280,15 @@ def figure(numfig):
         ax1_2 = figure.add_subplot(gs_2[1]) # water
         ax2_2 = figure.add_subplot(gs_2[2]) # sed
         
-                
+        for i,axis in enumerate((ax0,ax0_1,ax0_2)):
+            axis.text(x_text, y_text, labels[i], transform=axis.transAxes,
+                 fontsize=14, fontweight='bold', va='top', ha='right')
+                            
         plot('B_S_H2S',ax0,ax1,ax2,'H$_2$S')              
-        plot('B_Fe_Fe2',ax0_1,ax1_1,ax2_1,'FeII')  
-        plot('B_Mn_Mn2',ax0_2,ax1_2,ax2_2,'MnII')
+        plot('B_Fe_Fe2',ax0_1,ax1_1,ax2_1,'Fe(II)')  
+        plot('B_Mn_Mn2',ax0_2,ax1_2,ax2_2,'Mn(II)')
         plt.savefig('Figure07.pdf')
+        #plt.show()
         plt.clf()
         
     elif numfig == 6:
@@ -304,11 +316,14 @@ def figure(numfig):
         ax0_2 = figure.add_subplot(gs_2[0]) # ice 
         ax1_2 = figure.add_subplot(gs_2[1]) # water
         ax2_2 = figure.add_subplot(gs_2[2]) # sed
-                
+        for i,axis in enumerate((ax0,ax0_1,ax0_2)):
+            axis.text(x_text, y_text, labels[i], transform=axis.transAxes,
+                 fontsize=14, fontweight='bold', va='top', ha='right')                
         plot('B_NUT_Si',ax0,ax1,ax2,'Si')              
-        plot('B_NUT_NO3',ax0_1,ax1_1,ax2_1,'NO$_3$')  
-        plot('B_NUT_NH4',ax0_2,ax1_2,ax2_2,'NH$_4$')
+        plot('B_NUT_NO3',ax0_1,ax1_1,ax2_1,'NO$_3^-$')  
+        plot('B_NUT_NH4',ax0_2,ax1_2,ax2_2,'NH$_4^+$')
         plt.savefig('Figure06.pdf')
+        #plt.show()
         plt.clf()
         
         

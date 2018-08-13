@@ -117,13 +117,6 @@ gs0 = gridspec.GridSpec(3, 2)
 gs0.update(left=0.1, right= 0.95,top = 0.94,bottom = 0.075,
                    wspace=0.24,hspace=0.3)
 
-
-
-
-#gs = gridspec.GridSpec(2, 1)
-#gs.update(left=0.15, right= 0.95,top = 0.95,bottom = 0.06,
-#                   wspace=0,hspace=0.01)
-                   #
 dy = 0.04
 
 gs = gridspec.GridSpecFromSubplotSpec(2, 1, subplot_spec=gs0[0],hspace=dy)
@@ -132,8 +125,6 @@ gs2 = gridspec.GridSpecFromSubplotSpec(2, 1, subplot_spec=gs0[2],hspace=dy)
 gs3 = gridspec.GridSpecFromSubplotSpec(2, 1, subplot_spec=gs0[3],hspace=dy)
 gs4 = gridspec.GridSpecFromSubplotSpec(2, 1, subplot_spec=gs0[4],hspace=dy)
 gs5 = gridspec.GridSpecFromSubplotSpec(2, 1, subplot_spec=gs0[5],hspace=dy)
-
-
 
 #add subplots
 ax0 = figure.add_subplot(gs[0]) # o2 ice 
